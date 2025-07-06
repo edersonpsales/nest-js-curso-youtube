@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TaskModule } from './task/task.module';
+import { UsersModule } from './users/users.module';
 
 //@Module é um decorador que marca a classe como um módulo NestJS
 // Um módulo é uma classe que agrupa componentes relacionados, como controladores e provedores
@@ -11,7 +12,7 @@ import { TaskModule } from './task/task.module';
 // O AppController é responsável por lidar com as requisições HTTP e o AppService contém
 // a lógica de negócios da aplicação
 @Module({
-  imports: [TaskModule],
+  imports: [TaskModule, UsersModule],
   controllers: [AppController],
   providers: [AppService],
 })
