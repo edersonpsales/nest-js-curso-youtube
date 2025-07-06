@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { TaskDto } from './task.dto';
+import { FindAllParameters, TaskDto } from './task.dto';
 
 @Injectable()
 export class TaskService {
@@ -27,6 +27,22 @@ export class TaskService {
     );
   }
 
+  findAll(params: FindAllParameters): TaskDto[] {
+    return this.tasks.filter((task) => {
+      let match = true;
+
+      if (params.title != undefined && !task.title.includes(params.title)) {
+        match = false;
+      }
+
+      if (params.status != undefined && !task.status.includes(params.status)) {
+        match = false;
+      }
+
+      return match;
+    });
+  }
+
   update(task: TaskDto): TaskDto {
     const index = this.tasks.findIndex((t) => t.id === task.id);
     if (index === -1) {
@@ -37,5 +53,19 @@ export class TaskService {
     }
     this.tasks[index] = task;
     return task;
+  }
+
+  remove(id: string): void {
+    const index = this.tasks.findIndex((task) => task.id === id);
+
+    if (index === -1) {
+      throw new HttpException(
+        `Task with id ${id} not found`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    this.tasks.splice(index, 1);
+    console.log('Task deleted:', this.tasks);
   }
 }
