@@ -13,4 +13,8 @@ export class UsersService {
     this.users.push(user);
     console.log(this.users);
   }
+
+  findByUsername(username: string): UserDto | undefined {
+    return this.users.find((user) => user.username === username);
+  }
 }
